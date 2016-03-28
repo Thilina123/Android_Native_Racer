@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
 	private volatile GameThread thread;
+
+	public static float screenWidth,screenHeight;
 
 	//private SensorEventListener sensorAccelerometer;
 
@@ -36,7 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 		//Get the holder of the screen and register interest
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
-		
+
 		//Set up a handler for messages from GameThread
 		mHandler = new Handler() {
 			@Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -31,6 +32,10 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
+        DisplayMetrics dm= new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        GameView.screenWidth = dm.widthPixels;
+        GameView.screenHeight = dm.heightPixels;
         mGameView = (GameView)findViewById(R.id.gamearea);
         mGameView.setStatusView((TextView)findViewById(R.id.text));
         mGameView.setScoreView((TextView)findViewById(R.id.score));

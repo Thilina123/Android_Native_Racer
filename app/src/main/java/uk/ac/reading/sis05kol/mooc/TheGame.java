@@ -7,39 +7,37 @@ import android.graphics.Canvas;
 
 public class TheGame extends GameThread{
 
-    //Will store the image of a ball
-    private Bitmap mBall;
+    //Will store the image of a Car
+    private Bitmap carImage;
+    private Bitmap roadImage;
 
-    //The X and Y position of the ball on the screen (middle of ball)
-    private float mBallX = 0;
-    private float mBallY = 0;
-
-    //The speed (pixel/second) of the ball in direction X and Y
-    private float mBallSpeedX = 0;
-    private float mBallSpeedY = 0;
-
+    private Vehicle car;
+    private Road road;
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
         //House keeping
         super(gameView);
-
         //Prepare the image so we can draw it on the screen (using a canvas)
-        mBall = BitmapFactory.decodeResource
-                (gameView.getContext().getResources(),
-                        R.drawable.small_red_ball);
+        carImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
+        roadImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.road);
+        car = new Vehicle(carImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
+        road = new Road(roadImage,GameView.screenWidth/2,GameView.screenWidth,GameView.screenHeight);
+        System.out.println(mCanvasHeight);
     }
 
     //This is run before a new game (also after an old game)
     @Override
     public void setupBeginning() {
         //Initialise speeds
-        mBallSpeedX = 0;
-        mBallSpeedY = 0;
-
-        //Place the ball in the middle of the screen.
-        //mBall.Width() and mBall.getHeigh() gives us the height and width of the image of the ball
-        mBallX = mCanvasWidth / 2;
-        mBallY = mCanvasHeight / 2;
+        car.setSpeedX(0);
+        car.setSpeedY(0);
+        road.setSpeedY(5);
+        road.setPosX(GameView.screenWidth/2);
+        road.setPosY(GameView.screenHeight/2);
+        //Place the Car in the middle of the screen.
+        //carImage.Width() and carImage.getHeigh() gives us the height and width of the image of the Car
+        car.setPosX(GameView.screenWidth/2);
+        car.setPosY(GameView.screenHeight/2);
     }
 
     @Override
@@ -50,19 +48,20 @@ public class TheGame extends GameThread{
 
         super.doDraw(canvas);
 
-        //draw the image of the ball using the X and Y of the ball
+        //draw the image of the Car using the X and Y of the Car
         //drawBitmap uses top left corner as reference, we use middle of picture
         //null means that we will use the image without any extra features (called Paint)
-        canvas.drawBitmap(mBall, mBallX - mBall.getWidth() / 2, mBallY - mBall.getHeight() / 2, null);
+        road.draw(canvas);
+        car.draw(canvas);
     }
 
     //This is run whenever the phone is touched by the user
 
 	@Override
 	protected void actionOnTouch(float x, float y) {
-		//Increase/decrease the speed of the ball making the ball move towards the touch
-		mBallSpeedX = x - mBallX;
-		mBallSpeedY = y - mBallY;
+		//Increase/decrease the speed of the Car making the Car move towards the touch
+        car.setSpeedX(x-car.getPosX());
+        car.setSpeedY(y-car.getPosY());
 	}
 	
 
@@ -70,22 +69,22 @@ public class TheGame extends GameThread{
 //	@Override
 //	protected void actionWhenPhoneMoved(float xDirection, float yDirection, float zDirection) {
 //		/*
-//		Increase/decrease the speed of the ball.
-//		If the ball moves too fast try and decrease 70f
-//		If the ball moves too slow try and increase 70f
+//		Increase/decrease the speed of the Car.
+//		If the Car moves too fast try and decrease 70f
+//		If the Car moves too slow try and increase 70f
 //		 */
 //
-//		mBallSpeedX = mBallSpeedX + 70f * xDirection;
-//		mBallSpeedY = mBallSpeedY - 70f * yDirection;
+//		mCarSpeedX = mCarSpeedX + 70f * xDirection;
+//		mCarSpeedY = mCarSpeedY - 70f * yDirection;
 //	}
 
 
     //This is run just before the game "scenario" is printed on the screen
     @Override
     protected void updateGame(float secondsElapsed) {
-        //Move the ball's X and Y using the speed (pixel/sec)
-        mBallX = mBallX + secondsElapsed * mBallSpeedX;
-        mBallY = mBallY + secondsElapsed * mBallSpeedY;
+        //Move the Car's X and Y using the speed (pixel/sec)
+        car.update(secondsElapsed);
+        road.update(secondsElapsed);
     }
 }
 
