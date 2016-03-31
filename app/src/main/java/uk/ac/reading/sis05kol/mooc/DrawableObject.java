@@ -71,6 +71,16 @@ public class DrawableObject {
     public void update(float secondsElapsed){
 
     }
+    public boolean inCollision(DrawableObject other){
 
+        if (Math.abs(other.getPosX()-getPosX())<(other.getWidth()+getWidth())/2){
+            if (Math.abs(other.getPosY()-getPosY())<(other.getHeight()+getHeight())/2){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
 
 }

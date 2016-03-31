@@ -15,7 +15,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
+public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener,View.OnFocusChangeListener {
 	private volatile GameThread thread;
 
 	public static float screenWidth,screenHeight;
@@ -230,6 +230,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+
+	}
 }
 
 // This file is part of the course "Begin Programming: Build your first mobile game" from futurelearn.com

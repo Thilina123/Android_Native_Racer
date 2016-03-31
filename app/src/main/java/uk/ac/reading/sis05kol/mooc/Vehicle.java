@@ -44,4 +44,6 @@ public class Vehicle extends DrawableObject {
         setPosY(getPosY() + (secondsElapsed * speedY));
     }
 
+
+
 }

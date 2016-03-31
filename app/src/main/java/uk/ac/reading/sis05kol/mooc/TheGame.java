@@ -10,9 +10,12 @@ public class TheGame extends GameThread{
     //Will store the image of a Car
     private Bitmap carImage;
     private Bitmap roadImage;
+    private Bitmap yellow_car_image;
+
 
     private Vehicle car;
     private Road road;
+    private RoadCar roadVehicle;
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView) {
         //House keeping
@@ -20,8 +23,10 @@ public class TheGame extends GameThread{
         //Prepare the image so we can draw it on the screen (using a canvas)
         carImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
         roadImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.road);
+        yellow_car_image = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.yellow_car);
         car = new Vehicle(carImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
         road = new Road(roadImage,GameView.screenWidth/2,GameView.screenWidth,GameView.screenHeight);
+        roadVehicle = new RoadCar(yellow_car_image,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
         System.out.println(mCanvasHeight);
     }
 
@@ -31,9 +36,14 @@ public class TheGame extends GameThread{
         //Initialise speeds
         car.setSpeedX(0);
         car.setSpeedY(0);
-        road.setSpeedY(5);
+
+        road.setSpeedY(300);
         road.setPosX(GameView.screenWidth/2);
         road.setPosY(GameView.screenHeight/2);
+
+        roadVehicle.setSpeedY(450);
+        roadVehicle.setPosX(GameView.screenWidth/2);
+        roadVehicle.setPosY(GameView.screenHeight/2);
         //Place the Car in the middle of the screen.
         //carImage.Width() and carImage.getHeigh() gives us the height and width of the image of the Car
         car.setPosX(GameView.screenWidth/2);
@@ -53,6 +63,7 @@ public class TheGame extends GameThread{
         //null means that we will use the image without any extra features (called Paint)
         road.draw(canvas);
         car.draw(canvas);
+        roadVehicle.draw(canvas);
     }
 
     //This is run whenever the phone is touched by the user
@@ -60,12 +71,20 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the Car making the Car move towards the touch
-        car.setSpeedX(x-car.getPosX());
-        car.setSpeedY(y-car.getPosY());
+//        car.setSpeedX(x-car.getPosX());
+//        car.setSpeedY(y-car.getPosY());
+        if(x>GameView.screenWidth/2) {
+            car.setPosX(car.getPosX()+50);
+        }else {
+            car.setPosX(car.getPosX()-50);
+        }
 	}
-	
 
-	//This is run whenever the phone moves around its axises 
+    @Override
+    protected void actionOnTouchLift() {
+        car.setSpeedX(0);
+    }
+    //This is run whenever the phone moves around its axises
 //	@Override
 //	protected void actionWhenPhoneMoved(float xDirection, float yDirection, float zDirection) {
 //		/*
@@ -85,6 +104,16 @@ public class TheGame extends GameThread{
         //Move the Car's X and Y using the speed (pixel/sec)
         car.update(secondsElapsed);
         road.update(secondsElapsed);
+        roadVehicle.update(secondsElapsed);
+        CheckCollisions();
+    }
+
+    void CheckCollisions(){
+        if (roadVehicle.inCollision(car)){
+            System.out.println("collided");
+            car.setPosX(100);
+
+        }
     }
 }
 

@@ -35,16 +35,18 @@ public class Road extends DrawableObject {
 
     @Override
     public void update(float secondsElapsed) {
-        setPosY(getPosY()+getSpeedY());
+        setPosY(getPosY()+getSpeedY()*secondsElapsed);
         if (getPosY()>getHeight()/2+GameView.screenHeight){
+            System.out.println(getPosY());
             setPosY(GameView.screenHeight/2);
+//            System.out.println(getPosY());
         }
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        System.out.println(getPosX()+" : "+getPosY());
+//        System.out.println(getPosX()+" : "+getPosY());
         canvas.drawBitmap(getImage(), getPosX()-getWidth()/2, getPosY()-getHeight(), null);
         canvas.drawBitmap(getImage(), getPosX()-getWidth()/2, getPosY()-2*getHeight(), null);
     }

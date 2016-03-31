@@ -168,7 +168,13 @@ public abstract class GameThread extends Thread {
 	
 	//Finger touches the screen
 	public boolean onTouch(MotionEvent e) {
+		if(e.getAction() == MotionEvent.ACTION_POINTER_UP){
+			this.actionOnTouchLift();
+			return false;
+		}
 		if(e.getAction() != MotionEvent.ACTION_DOWN) return false;
+
+
 		
 		if(mMode == STATE_READY || mMode == STATE_LOSE || mMode == STATE_WIN) {
 			doStart();
@@ -181,13 +187,18 @@ public abstract class GameThread extends Thread {
 		}
 		
 		synchronized (monitor) {
+
 				this.actionOnTouch(e.getRawX(), e.getRawY());
+
 		}
 		 
 		return false;
 	}
 	
 	protected void actionOnTouch(float x, float y) {
+		//Override to do something
+	}
+	protected void actionOnTouchLift() {
 		//Override to do something
 	}
 
