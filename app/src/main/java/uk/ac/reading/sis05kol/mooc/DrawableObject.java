@@ -31,7 +31,11 @@ public class DrawableObject {
     private float screenWidth;
     private float screenHeight;
 
-    public DrawableObject(Bitmap image, float width,float canvasWidth,float canvasHeight) {
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public DrawableObject(Bitmap image, float width, float canvasWidth, float canvasHeight) {
         this.image = image;
         this.width =width;
         this.screenWidth = canvasWidth;

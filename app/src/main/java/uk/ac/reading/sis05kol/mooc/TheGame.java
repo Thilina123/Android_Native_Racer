@@ -11,6 +11,8 @@ public class TheGame extends GameThread{
     private Bitmap carImage;
     private Bitmap roadImage;
     private Bitmap yellow_car_image;
+    private Bitmap truck;
+    private Bitmap pickup;
 
 
     private Vehicle car;
@@ -24,6 +26,9 @@ public class TheGame extends GameThread{
         carImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
         roadImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.road);
         yellow_car_image = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.yellow_car);
+        truck = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.truck);
+        pickup = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.pickup);
+
         car = new Vehicle(carImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
         road = new Road(roadImage,GameView.screenWidth/2,GameView.screenWidth,GameView.screenHeight);
         roadVehicle = new RoadCar(yellow_car_image,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
@@ -44,6 +49,16 @@ public class TheGame extends GameThread{
         roadVehicle.setSpeedY(450);
         roadVehicle.setPosX(GameView.screenWidth/2);
         roadVehicle.setPosY(GameView.screenHeight/2);
+
+        Bitmap[] bmps= new Bitmap[2];
+        bmps[1]= truck;
+        bmps[0]=pickup;
+
+        float[] speeds=new float[2];
+        speeds[0] = 400;
+        speeds[1] = 350;
+
+        roadVehicle.SetAlternatives(bmps,speeds);
         //Place the Car in the middle of the screen.
         //carImage.Width() and carImage.getHeigh() gives us the height and width of the image of the Car
         car.setPosX(GameView.screenWidth/2);
