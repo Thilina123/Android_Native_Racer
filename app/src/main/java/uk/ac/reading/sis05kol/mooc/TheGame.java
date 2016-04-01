@@ -1,6 +1,8 @@
 package uk.ac.reading.sis05kol.mooc;
 
 //Other parts of the android libraries that we use
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,10 +20,14 @@ public class TheGame extends GameThread{
     private Vehicle car;
     private Road road;
     private RoadCar roadVehicle;
+    private MainActivity mainActivity;
+    private int score;
+
     //This is run before anything else, so we can prepare things here
-    public TheGame(GameView gameView) {
+    public TheGame(GameView gameView, MainActivity mainActivity) {
         //House keeping
         super(gameView);
+        this.mainActivity=mainActivity;
         //Prepare the image so we can draw it on the screen (using a canvas)
         carImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
         roadImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.road);
@@ -48,7 +54,7 @@ public class TheGame extends GameThread{
 
         roadVehicle.setSpeedY(450);
         roadVehicle.setPosX(GameView.screenWidth/2);
-        roadVehicle.setPosY(GameView.screenHeight/2);
+        roadVehicle.setPosY(-300);
 
         Bitmap[] bmps= new Bitmap[2];
         bmps[1]= truck;
@@ -120,6 +126,8 @@ public class TheGame extends GameThread{
         car.update(secondsElapsed);
         road.update(secondsElapsed);
         roadVehicle.update(secondsElapsed);
+        score++;
+//        mGameView.getScoreView().setText(score);
         CheckCollisions();
     }
 
@@ -127,7 +135,9 @@ public class TheGame extends GameThread{
         if (roadVehicle.inCollision(car)){
             System.out.println("collided");
             car.setPosX(100);
-
+            mainActivity.onGameOver();
+//            Intent myIntent = new Intent(activity,Game_over.class);
+//            activity.this.startActivity(myIntent);
         }
     }
 }
@@ -144,6 +154,6 @@ public class TheGame extends GameThread{
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with it.  If not, see <http://www.gnu.org/licenses/>.

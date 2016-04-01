@@ -2,6 +2,7 @@ package uk.ac.reading.sis05kol.mooc;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -37,8 +38,11 @@ public class MainActivity extends Activity {
         GameView.screenWidth = dm.widthPixels;
         GameView.screenHeight = dm.heightPixels;
         mGameView = (GameView)findViewById(R.id.gamearea);
+        mGameView.setMainActivity(this);
         mGameView.setStatusView((TextView)findViewById(R.id.text));
         mGameView.setScoreView((TextView)findViewById(R.id.score));
+
+      ((TextView) findViewById(R.id.score)).setText("5");
 
         this.startGame(mGameView, null, savedInstanceState);
     }
@@ -46,7 +50,7 @@ public class MainActivity extends Activity {
     private void startGame(GameView gView, GameThread gThread, Bundle savedInstanceState) {
 
         //Set up a new game, we don't care about previous states
-        mGameThread = new TheGame(mGameView);
+        mGameThread = new TheGame(mGameView, this);
         mGameView.setThread(mGameThread);
         mGameThread.setState(GameThread.STATE_READY);
         mGameView.startSensor((SensorManager)getSystemService(Context.SENSOR_SERVICE));
@@ -106,6 +110,12 @@ public class MainActivity extends Activity {
         }
 
         return false;
+    }
+
+    public void onGameOver(){
+
+        Intent myIntent = new Intent(MainActivity.this,Game_over.class);
+        MainActivity.this.startActivity(myIntent);
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {

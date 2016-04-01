@@ -1,5 +1,6 @@
 package uk.ac.reading.sis05kol.mooc;
 
+import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,7 +9,6 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 	//Pointers to the views
 	private TextView mScoreView;
 	private TextView mStatusView;
+	private MainActivity mainActivity;
 
     Sensor accelerometer;
     Sensor magnetometer;
@@ -85,6 +86,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 	/*
 	 * Setters and Getters
 	 */
+
+	public void setMainActivity(MainActivity mainActivity) {
+		this.mainActivity = mainActivity;
+	}
 
 	public void setThread(GameThread newThread) {
 
@@ -157,7 +162,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 					//Start a new thread
 					//Should be this to update screen with old game: new GameThread(this, thread);
 					//The method should set all fields in new thread to the value of old thread's fields 
-					thread = new TheGame(this); 
+					thread = new TheGame(this, this.mainActivity);
 					thread.setRunning(true);
 					thread.start();
 				}
