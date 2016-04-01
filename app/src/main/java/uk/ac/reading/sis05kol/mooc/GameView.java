@@ -162,7 +162,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 					//Start a new thread
 					//Should be this to update screen with old game: new GameThread(this, thread);
 					//The method should set all fields in new thread to the value of old thread's fields 
-					thread = new TheGame(this, this.mainActivity);
+					thread = new TheGame(this, this.mainActivity,mScoreView);
 					thread.setRunning(true);
 					thread.start();
 				}

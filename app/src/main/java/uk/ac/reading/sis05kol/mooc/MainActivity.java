@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     private void startGame(GameView gView, GameThread gThread, Bundle savedInstanceState) {
 
         //Set up a new game, we don't care about previous states
-        mGameThread = new TheGame(mGameView, this);
+        mGameThread = new TheGame(mGameView, this,(TextView)findViewById(R.id.score));
         mGameView.setThread(mGameThread);
         mGameThread.setState(GameThread.STATE_READY);
         mGameView.startSensor((SensorManager)getSystemService(Context.SENSOR_SERVICE));

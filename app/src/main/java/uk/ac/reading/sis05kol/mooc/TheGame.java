@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.widget.TextView;
 
 public class TheGame extends GameThread{
 
@@ -21,13 +22,15 @@ public class TheGame extends GameThread{
     private Road road;
     private RoadCar roadVehicle;
     private MainActivity mainActivity;
+    private TextView scoreView;
     private int score;
 
     //This is run before anything else, so we can prepare things here
-    public TheGame(GameView gameView, MainActivity mainActivity) {
+    public TheGame(GameView gameView, MainActivity mainActivity, TextView scoreView) {
         //House keeping
         super(gameView);
         this.mainActivity=mainActivity;
+        this.scoreView=scoreView;
         //Prepare the image so we can draw it on the screen (using a canvas)
         carImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
         roadImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.road);
@@ -127,7 +130,7 @@ public class TheGame extends GameThread{
         road.update(secondsElapsed);
         roadVehicle.update(secondsElapsed);
         score++;
-//        mGameView.getScoreView().setText(score);
+//        scoreView.setText(score);
         CheckCollisions();
     }
 
