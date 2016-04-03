@@ -84,13 +84,13 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the Car making the Car move towards the touch
-//        playerShip.setSpeedX(x-playerShip.getPosX());
+        playerShip.setSpeedX(x-playerShip.getPosX());
 //        playerShip.setSpeedY(y-playerShip.getPosY());
-        if(x>GameView.screenWidth/2) {
-            playerShip.setPosX(playerShip.getPosX()+50);
-        }else {
-            playerShip.setPosX(playerShip.getPosX()-50);
-        }
+//        if(x>GameView.screenWidth/2) {
+//            playerShip.setPosX(playerShip.getPosX()+50);
+//        }else {
+//            playerShip.setPosX(playerShip.getPosX()-50);
+//        }
 	}
 
     @Override
@@ -119,10 +119,10 @@ public class TheGame extends GameThread{
         //road.update(secondsElapsed);
         enemyShips.update(secondsElapsed);
         frameCount++;
-        if(frameCount%100==0) {
-            score++;
-            ChangeScore(score);
-        }
+//        if(frameCount%100==0) {
+//            score++;
+//            ChangeScore(score);
+//        }
         CheckCollisions();
     }
 

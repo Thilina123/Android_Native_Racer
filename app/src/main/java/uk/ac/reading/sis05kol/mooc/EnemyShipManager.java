@@ -3,6 +3,7 @@ package uk.ac.reading.sis05kol.mooc;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 
 import java.util.Random;
 
@@ -17,9 +18,11 @@ public class EnemyShipManager {
     private Bitmap ship2Image;
     private Bitmap ship3Image;
 
-    private EnemyShip[] ships = new EnemyShip[3];
+    private EnemyShip[] ships = new EnemyShip[5];
 
     private EnemyShip enemyShip;
+
+    private int score;
 
     public EnemyShipManager(GameView gameView) {
         this.gameView = gameView;
@@ -33,7 +36,8 @@ public class EnemyShipManager {
 
 
             enemyShip.setSpeedY(450);
-            enemyShip.setPosX(new Random().nextInt((int) GameView.screenWidth));
+//            enemyShip.setPosX(new Random().nextInt((int) GameView.screenWidth));
+            enemyShip.setPosX(GameView.screenWidth/2);
 //            enemyShip.setPosY(new Random().nextInt((int) GameView.screenHeight));
             enemyShip.setPosY(-new Random().nextInt(500));
             System.out.println(enemyShip.getPosY()+"..............");
@@ -69,12 +73,35 @@ public class EnemyShipManager {
 
     }
 
-    public boolean inCollision(Ship playerShip) {
+    public boolean inCollision(PlayerShip playerShip) {
+        Bullet[] bullets = playerShip.getBullets();
         for (int i = 0; i <ships.length ; i++) {
+            for (int j = 0; j < bullets.length; j++) {
+                if (ships[i].inCollision(bullets[j])){
+                    ships[i].Randomize();
+                    ChangeScore();
+                }
+            }
             if (ships[i].inCollision(playerShip)){
                 return true;
             }
         }
         return false;
+    }
+
+    private Handler mHandler = new Handler();
+    public void ChangeScore() {
+        score++;
+        final String str = score+"";
+        if (score%100==0){
+//            super.changeBackGround();
+        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // This gets executed on the UI thread so it can safely modify Views
+                gameView.getScoreView().setText(str);
+            }
+        });
     }
 }

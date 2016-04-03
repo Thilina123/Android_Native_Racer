@@ -27,7 +27,6 @@ public class EnemyShip extends Ship {
 //        System.out.println(getPosY()+" : "+GameView.screenHeight);
         if (getPosY()>GameView.screenHeight*2){
             Randomize();
-            setPosY(-new Random().nextInt(500));
         }
     }
     public void Randomize(){
@@ -35,8 +34,9 @@ public class EnemyShip extends Ship {
 
         int rnd= (new Random()).nextInt(alternativeSpeeds.length);
         setImage(alternativeTextures[rnd]);
-        setSpeedY(alternativeSpeeds[rnd]);
+        setSpeedY(r.nextInt(800));
         setPosX(r.nextInt((int) GameView.screenWidth));
+        setPosY(-new Random().nextInt(500));
     }
 
 }
