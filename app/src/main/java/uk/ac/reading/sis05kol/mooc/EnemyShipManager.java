@@ -17,10 +17,12 @@ public class EnemyShipManager {
     private Bitmap ship1Image;
     private Bitmap ship2Image;
     private Bitmap ship3Image;
+    private Bitmap bulletImage;
 
     private EnemyShip[] ships = new EnemyShip[5];
 
     private EnemyShip enemyShip;
+
 
     private int score;
 
@@ -29,10 +31,11 @@ public class EnemyShipManager {
         ship1Image = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.yellow_car);
         ship2Image = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.truck);
         ship3Image = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.pickup);
+        bulletImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.bullet);
 
         for (int i = 0; i <ships.length ; i++) {
 
-            enemyShip = new EnemyShip(ship1Image,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
+            enemyShip = new EnemyShip(ship1Image,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight,bulletImage);
 
 
             enemyShip.setSpeedY(450);
@@ -52,6 +55,7 @@ public class EnemyShipManager {
             speeds[1] = 350;
 
             enemyShip.SetAlternatives(bmps,speeds);
+            enemyShip.setupBullets();
 
             ships[i]=enemyShip;
         }
@@ -81,8 +85,11 @@ public class EnemyShipManager {
                     ships[i].Randomize();
                     ChangeScore();
                 }
+                if (ships[i].getBullet().inCollision(bullets[j])){
+                    ships[i].setupBullets();
+                }
             }
-            if (ships[i].inCollision(playerShip)){
+            if (ships[i].inCollision(playerShip) || ships[i].getBullet().inCollision(playerShip)){
                 return true;
             }
         }
@@ -92,7 +99,7 @@ public class EnemyShipManager {
     private Handler mHandler = new Handler();
     public void ChangeScore() {
         score++;
-        final String str = score+"";
+        final String str = "score : "+score;
         if (score%100==0){
 //            super.changeBackGround();
         }

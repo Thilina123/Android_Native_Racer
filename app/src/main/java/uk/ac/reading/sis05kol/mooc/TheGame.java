@@ -21,6 +21,7 @@ public class TheGame extends GameThread{
     private MainActivity mainActivity;
     private TextView scoreView;
     private int score;
+    private int playerLives = 10;
     private int frameCount;
     private GameView gameView;
 
@@ -85,6 +86,7 @@ public class TheGame extends GameThread{
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the Car making the Car move towards the touch
         playerShip.setSpeedX(x-playerShip.getPosX());
+        playerShip.setSpeedX(playerShip.getSpeedX()*1.5f);
 //        playerShip.setSpeedY(y-playerShip.getPosY());
 //        if(x>GameView.screenWidth/2) {
 //            playerShip.setPosX(playerShip.getPosX()+50);
@@ -129,8 +131,10 @@ public class TheGame extends GameThread{
     void CheckCollisions(){
         if (enemyShips.inCollision(playerShip)){
             System.out.println("collided");
-            playerShip.setPosX(100);
-            mainActivity.onGameOver();
+            playerLives--;
+            if(playerLives<0) {
+                mainActivity.onGameOver();
+            }
 //            Intent myIntent = new Intent(activity,Game_over.class);
 //            activity.this.startActivity(myIntent);
         }

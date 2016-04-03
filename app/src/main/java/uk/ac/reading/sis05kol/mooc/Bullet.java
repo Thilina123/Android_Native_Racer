@@ -7,8 +7,8 @@ import android.graphics.Bitmap;
  */
 public class Bullet extends Ship {
 
-    private PlayerShip playerShip;
-    public Bullet(Bitmap image, float width, float canvasWidth, float canvasHeight,PlayerShip playerShip) {
+    private Ship playerShip;
+    public Bullet(Bitmap image, float width, float canvasWidth, float canvasHeight,Ship playerShip) {
         super(image, width, canvasWidth, canvasHeight);
         this.playerShip = playerShip;
     }
