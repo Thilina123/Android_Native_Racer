@@ -31,9 +31,12 @@ public class RoadCar extends Vehicle{
         }
     }
     public void Randomize(){
+        Random r= new Random();
+
         int rnd= (new Random()).nextInt(alternativeSpeeds.length);
         setImage(alternativeTextures[rnd]);
         setSpeedY(alternativeSpeeds[rnd]);
+        setPosX(GameView.screenWidth/2+r.nextInt(100)-50);
     }
 
 }

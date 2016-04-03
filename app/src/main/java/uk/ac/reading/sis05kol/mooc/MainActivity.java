@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -121,6 +122,8 @@ public class MainActivity extends Activity {
     public void onNothingSelected(AdapterView<?> arg0) {
         // Do nothing if nothing is selected
     }
+
+
 }
 
 // This file is part of the course "Begin Programming: Build your first mobile game" from futurelearn.com

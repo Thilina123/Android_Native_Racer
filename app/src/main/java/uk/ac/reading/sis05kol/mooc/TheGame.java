@@ -1,11 +1,10 @@
 package uk.ac.reading.sis05kol.mooc;
 
 //Other parts of the android libraries that we use
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.widget.TextView;
 
 public class TheGame extends GameThread{
@@ -24,11 +23,14 @@ public class TheGame extends GameThread{
     private MainActivity mainActivity;
     private TextView scoreView;
     private int score;
+    private int frameCount;
+    private GameView gameView;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView, MainActivity mainActivity, TextView scoreView) {
         //House keeping
         super(gameView);
+        this.gameView=gameView;
         this.mainActivity=mainActivity;
         this.scoreView=scoreView;
         //Prepare the image so we can draw it on the screen (using a canvas)
@@ -82,6 +84,7 @@ public class TheGame extends GameThread{
 
         super.doDraw(canvas);
 
+
         //draw the image of the Car using the X and Y of the Car
         //drawBitmap uses top left corner as reference, we use middle of picture
         //null means that we will use the image without any extra features (called Paint)
@@ -129,8 +132,11 @@ public class TheGame extends GameThread{
         car.update(secondsElapsed);
         road.update(secondsElapsed);
         roadVehicle.update(secondsElapsed);
-        score++;
-//        scoreView.setText(score);
+        frameCount++;
+        if(frameCount%100==0) {
+            score++;
+            ChangeScore(score);
+        }
         CheckCollisions();
     }
 
@@ -142,6 +148,21 @@ public class TheGame extends GameThread{
 //            Intent myIntent = new Intent(activity,Game_over.class);
 //            activity.this.startActivity(myIntent);
         }
+    }
+
+    private Handler mHandler = new Handler();
+    public void ChangeScore(int score) {
+        final String str = score+"";
+        if (score%10==0){
+            super.changeBackGround();
+        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // This gets executed on the UI thread so it can safely modify Views
+                scoreView.setText(str);
+            }
+        });
     }
 }
 

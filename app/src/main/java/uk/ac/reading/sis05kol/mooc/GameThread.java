@@ -56,6 +56,7 @@ public abstract class GameThread extends Thread {
     //Used for time keeping
 	private long now;
 	private float elapsed;
+	private int bgNo;
 
     //Rotation vectors used to calculate orientation
     float[] mGravity;
@@ -74,7 +75,7 @@ public abstract class GameThread extends Thread {
 		
 		mBackgroundImage = BitmapFactory.decodeResource
 							(gameView.getContext().getResources(), 
-							R.drawable.background);
+							R.drawable.bg1);
 	}
 	
 	/*
@@ -138,7 +139,7 @@ public abstract class GameThread extends Thread {
 			mCanvasWidth = width;
 			mCanvasHeight = height;
 
-			// don't forget to resize the background image
+			// don't forget to resize the bg1 image
 			mBackgroundImage = Bitmap.createScaledBitmap(mBackgroundImage, width, height, true);
 		}
 	}
@@ -336,6 +337,18 @@ public abstract class GameThread extends Thread {
 			msg.setData(b);
 			mHandler.sendMessage(msg);
 		}
+	}
+	public void changeBackGround(){
+		bgNo++;
+		bgNo = bgNo%3;
+		if(bgNo==1)
+		mBackgroundImage = BitmapFactory.decodeResource(mGameView.getContext().getResources(),R.drawable.bg1);
+
+		if(bgNo==2)
+			mBackgroundImage = BitmapFactory.decodeResource(mGameView.getContext().getResources(),R.drawable.bg2);
+
+		if(bgNo==3)
+			mBackgroundImage = BitmapFactory.decodeResource(mGameView.getContext().getResources(),R.drawable.bg3);
 	}
 
 	public float getScore() {

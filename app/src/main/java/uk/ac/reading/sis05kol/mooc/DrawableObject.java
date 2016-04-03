@@ -16,6 +16,10 @@ public class DrawableObject {
     private float posX;
     private float posY;
 
+
+    private Bitmap[] alternativeTextures;
+    private int currentImage;
+
     public float getScreenWidth() {
         return screenWidth;
     }
@@ -75,6 +79,18 @@ public class DrawableObject {
     public void update(float secondsElapsed){
 
     }
+
+    public void SetAlternativeImages(Bitmap[] images){
+        this.alternativeTextures =images;
+    }
+
+    public void randomizeTexture(){
+        if(alternativeTextures!=null){
+            currentImage++;
+            image = alternativeTextures[currentImage%alternativeTextures.length];
+        }
+    }
+
     public boolean inCollision(DrawableObject other){
 
         if (Math.abs(other.getPosX()-getPosX())<(other.getWidth()+getWidth())/2){

@@ -37,9 +37,7 @@ public class Road extends DrawableObject {
     public void update(float secondsElapsed) {
         setPosY(getPosY()+getSpeedY()*secondsElapsed);
         if (getPosY()>getHeight()/2+GameView.screenHeight){
-            System.out.println(getPosY());
             setPosY(GameView.screenHeight/2);
-//            System.out.println(getPosY());
         }
     }
 
