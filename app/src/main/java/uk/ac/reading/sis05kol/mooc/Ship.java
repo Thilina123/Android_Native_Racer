@@ -7,7 +7,7 @@ import android.view.Display;
 /**
  * Created by Thilina on 2016-03-28.
  */
-public class Vehicle extends DrawableObject {
+public class Ship extends DrawableObject {
 
 
     //The speed (pixel/second) of the vehicle in direction X and Y
@@ -17,7 +17,7 @@ public class Vehicle extends DrawableObject {
     //scale related to screen size;
     private float scale= 1;
 
-    public Vehicle(Bitmap image, float width, float canvasWidth, float canvasHeight) {
+    public Ship(Bitmap image, float width, float canvasWidth, float canvasHeight) {
         super(image, width, canvasWidth, canvasHeight);
     }
 

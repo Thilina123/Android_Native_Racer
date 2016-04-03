@@ -7,12 +7,12 @@ import java.util.Random;
 /**
  * Created by Thilina on 2016-03-30.
  */
-public class RoadCar extends Vehicle{
+public class EnemyShip extends Ship {
 
     private Bitmap[] alternativeTextures;
     private float[] alternativeSpeeds;
 
-    public RoadCar(Bitmap image, float width, float canvasWidth, float canvasHeight) {
+    public EnemyShip(Bitmap image, float width, float canvasWidth, float canvasHeight) {
         super(image, width, canvasWidth, canvasHeight);
     }
 
@@ -27,7 +27,7 @@ public class RoadCar extends Vehicle{
 //        System.out.println(getPosY()+" : "+GameView.screenHeight);
         if (getPosY()>GameView.screenHeight*2){
             Randomize();
-            setPosY(-GameView.screenHeight);
+            setPosY(-new Random().nextInt(500));
         }
     }
     public void Randomize(){
@@ -36,7 +36,7 @@ public class RoadCar extends Vehicle{
         int rnd= (new Random()).nextInt(alternativeSpeeds.length);
         setImage(alternativeTextures[rnd]);
         setSpeedY(alternativeSpeeds[rnd]);
-        setPosX(GameView.screenWidth/2+r.nextInt(100)-50);
+        setPosX(r.nextInt((int) GameView.screenWidth));
     }
 
 }

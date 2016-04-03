@@ -10,16 +10,14 @@ import android.widget.TextView;
 public class TheGame extends GameThread{
 
     //Will store the image of a Car
-    private Bitmap carImage;
+    private Bitmap playerShipImage;
     private Bitmap roadImage;
-    private Bitmap yellow_car_image;
-    private Bitmap truck;
-    private Bitmap pickup;
+    private Bitmap bulletImage;
 
 
-    private Vehicle car;
+    private PlayerShip playerShip;
     private Road road;
-    private RoadCar roadVehicle;
+    private EnemyShipManager enemyShips;
     private MainActivity mainActivity;
     private TextView scoreView;
     private int score;
@@ -34,46 +32,34 @@ public class TheGame extends GameThread{
         this.mainActivity=mainActivity;
         this.scoreView=scoreView;
         //Prepare the image so we can draw it on the screen (using a canvas)
-        carImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
+        playerShipImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.small_red_car);
         roadImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.road);
-        yellow_car_image = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.yellow_car);
-        truck = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.truck);
-        pickup = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.pickup);
+        bulletImage = BitmapFactory.decodeResource(gameView.getContext().getResources(),R.drawable.bullet);
 
-        car = new Vehicle(carImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
+        playerShip = new PlayerShip(playerShipImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight,bulletImage);
         road = new Road(roadImage,GameView.screenWidth/2,GameView.screenWidth,GameView.screenHeight);
-        roadVehicle = new RoadCar(yellow_car_image,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
         System.out.println(mCanvasHeight);
+
+        enemyShips = new EnemyShipManager(gameView);
     }
 
     //This is run before a new game (also after an old game)
     @Override
     public void setupBeginning() {
         //Initialise speeds
-        car.setSpeedX(0);
-        car.setSpeedY(0);
+        playerShip.setSpeedX(0);
+        playerShip.setSpeedY(0);
 
         road.setSpeedY(300);
         road.setPosX(GameView.screenWidth/2);
         road.setPosY(GameView.screenHeight/2);
 
-        roadVehicle.setSpeedY(450);
-        roadVehicle.setPosX(GameView.screenWidth/2);
-        roadVehicle.setPosY(-300);
 
-        Bitmap[] bmps= new Bitmap[2];
-        bmps[1]= truck;
-        bmps[0]=pickup;
-
-        float[] speeds=new float[2];
-        speeds[0] = 400;
-        speeds[1] = 350;
-
-        roadVehicle.SetAlternatives(bmps,speeds);
         //Place the Car in the middle of the screen.
-        //carImage.Width() and carImage.getHeigh() gives us the height and width of the image of the Car
-        car.setPosX(GameView.screenWidth/2);
-        car.setPosY(GameView.screenHeight/2);
+        //playerShipImage.Width() and playerShipImage.getHeigh() gives us the height and width of the image of the Car
+        playerShip.setPosX(GameView.screenWidth/2);
+        playerShip.setPosY(GameView.screenHeight*.8f);
+        playerShip.setupBullets();
     }
 
     @Override
@@ -88,9 +74,9 @@ public class TheGame extends GameThread{
         //draw the image of the Car using the X and Y of the Car
         //drawBitmap uses top left corner as reference, we use middle of picture
         //null means that we will use the image without any extra features (called Paint)
-        road.draw(canvas);
-        car.draw(canvas);
-        roadVehicle.draw(canvas);
+        //road.draw(canvas);
+        playerShip.draw(canvas);
+        enemyShips.draw(canvas);
     }
 
     //This is run whenever the phone is touched by the user
@@ -98,18 +84,18 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the Car making the Car move towards the touch
-//        car.setSpeedX(x-car.getPosX());
-//        car.setSpeedY(y-car.getPosY());
+//        playerShip.setSpeedX(x-playerShip.getPosX());
+//        playerShip.setSpeedY(y-playerShip.getPosY());
         if(x>GameView.screenWidth/2) {
-            car.setPosX(car.getPosX()+50);
+            playerShip.setPosX(playerShip.getPosX()+50);
         }else {
-            car.setPosX(car.getPosX()-50);
+            playerShip.setPosX(playerShip.getPosX()-50);
         }
 	}
 
     @Override
     protected void actionOnTouchLift() {
-        car.setSpeedX(0);
+        playerShip.setSpeedX(0);
     }
     //This is run whenever the phone moves around its axises
 //	@Override
@@ -129,9 +115,9 @@ public class TheGame extends GameThread{
     @Override
     protected void updateGame(float secondsElapsed) {
         //Move the Car's X and Y using the speed (pixel/sec)
-        car.update(secondsElapsed);
-        road.update(secondsElapsed);
-        roadVehicle.update(secondsElapsed);
+        playerShip.update(secondsElapsed);
+        //road.update(secondsElapsed);
+        enemyShips.update(secondsElapsed);
         frameCount++;
         if(frameCount%100==0) {
             score++;
@@ -141,9 +127,9 @@ public class TheGame extends GameThread{
     }
 
     void CheckCollisions(){
-        if (roadVehicle.inCollision(car)){
+        if (enemyShips.inCollision(playerShip)){
             System.out.println("collided");
-            car.setPosX(100);
+            playerShip.setPosX(100);
             mainActivity.onGameOver();
 //            Intent myIntent = new Intent(activity,Game_over.class);
 //            activity.this.startActivity(myIntent);
@@ -153,8 +139,8 @@ public class TheGame extends GameThread{
     private Handler mHandler = new Handler();
     public void ChangeScore(int score) {
         final String str = score+"";
-        if (score%10==0){
-            super.changeBackGround();
+        if (score%100==0){
+//            super.changeBackGround();
         }
         mHandler.post(new Runnable() {
             @Override
