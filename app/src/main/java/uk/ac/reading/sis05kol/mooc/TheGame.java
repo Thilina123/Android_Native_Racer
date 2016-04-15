@@ -19,7 +19,8 @@ public class TheGame extends GameThread{
 
     private Vehicle car;
     private Road road;
-    private RoadCar roadVehicle;
+    private RoadCarManager roadVehicles;
+
     private MainActivity mainActivity;
     private TextView scoreView;
     private int score;
@@ -42,7 +43,8 @@ public class TheGame extends GameThread{
 
         car = new Vehicle(carImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
         road = new Road(roadImage,GameView.screenWidth/2,GameView.screenWidth,GameView.screenHeight);
-        roadVehicle = new RoadCar(yellow_car_image,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
+        roadVehicles = new RoadCarManager(gameView);
+
         System.out.println(mCanvasHeight);
     }
 
@@ -57,9 +59,9 @@ public class TheGame extends GameThread{
         road.setPosX(GameView.screenWidth/2);
         road.setPosY(GameView.screenHeight/2);
 
-        roadVehicle.setSpeedY(450);
-        roadVehicle.setPosX(GameView.screenWidth/2);
-        roadVehicle.setPosY(-300);
+//        roadVehicles.setSpeedY(450);
+//        roadVehicles.setPosX(GameView.screenWidth/2);
+//        roadVehicles.setPosY(-300);
 
         Bitmap[] bmps= new Bitmap[2];
         bmps[1]= truck;
@@ -69,7 +71,7 @@ public class TheGame extends GameThread{
         speeds[0] = 400;
         speeds[1] = 350;
 
-        roadVehicle.SetAlternatives(bmps,speeds);
+//        roadVehicles.SetAlternatives(bmps,speeds);
         //Place the Car in the middle of the screen.
         //carImage.Width() and carImage.getHeigh() gives us the height and width of the image of the Car
         car.setPosX(GameView.screenWidth/2);
@@ -90,7 +92,7 @@ public class TheGame extends GameThread{
         //null means that we will use the image without any extra features (called Paint)
         road.draw(canvas);
         car.draw(canvas);
-        roadVehicle.draw(canvas);
+        roadVehicles.draw(canvas);
     }
 
     //This is run whenever the phone is touched by the user
@@ -98,13 +100,13 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the Car making the Car move towards the touch
-//        car.setSpeedX(x-car.getPosX());
-//        car.setSpeedY(y-car.getPosY());
-        if(x>GameView.screenWidth/2) {
-            car.setPosX(car.getPosX()+50);
-        }else {
-            car.setPosX(car.getPosX()-50);
-        }
+        car.setSpeedX(x-car.getPosX());
+        car.setSpeedX(car.getSpeedX()*1.5f);
+//        if(x>GameView.screenWidth/2) {
+//            car.setPosX(car.getPosX()+50);
+//        }else {
+//            car.setPosX(car.getPosX()-50);
+//        }
 	}
 
     @Override
@@ -131,7 +133,7 @@ public class TheGame extends GameThread{
         //Move the Car's X and Y using the speed (pixel/sec)
         car.update(secondsElapsed);
         road.update(secondsElapsed);
-        roadVehicle.update(secondsElapsed);
+        roadVehicles.update(secondsElapsed);
         frameCount++;
         if(frameCount%100==0) {
             score++;
@@ -141,7 +143,7 @@ public class TheGame extends GameThread{
     }
 
     void CheckCollisions(){
-        if (roadVehicle.inCollision(car)){
+        if (roadVehicles.inCollision(car)){
             System.out.println("collided");
             car.setPosX(100);
             mainActivity.onGameOver();

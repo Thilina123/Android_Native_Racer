@@ -26,4 +26,11 @@ public class Game_over extends Activity {
         Game_over.this.startActivity(myIntent);
 
     }
+
+
+    public void OnExit(View v) {
+        finish();
+        System.exit(0);
+
+    }
 }

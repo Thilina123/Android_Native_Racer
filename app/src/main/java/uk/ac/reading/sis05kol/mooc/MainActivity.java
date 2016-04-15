@@ -117,6 +117,7 @@ public class MainActivity extends Activity {
 
         Intent myIntent = new Intent(MainActivity.this,Game_over.class);
         MainActivity.this.startActivity(myIntent);
+        finish();
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {

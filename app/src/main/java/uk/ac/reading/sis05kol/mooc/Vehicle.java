@@ -42,6 +42,15 @@ public class Vehicle extends DrawableObject {
     public void update(float secondsElapsed){
         setPosX(getPosX() + (secondsElapsed * speedX));
         setPosY(getPosY() + (secondsElapsed * speedY));
+        if (getSpeedX()>0){
+            setSpeedX(getSpeedX()-10);
+            return;
+        }
+        if (getSpeedX()<0){
+            setSpeedX(getSpeedX()+10);
+            return;
+        }
+        setSpeedX(0);
     }
 
 

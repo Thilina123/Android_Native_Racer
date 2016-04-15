@@ -16,7 +16,7 @@ public class welcome extends Activity {
     public void onStartBtnClick(View v) {
         Intent myIntent = new Intent(welcome.this, MainActivity.class);
         welcome.this.startActivity(myIntent);
-
+        finish();
     }
 
 }

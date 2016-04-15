@@ -43,9 +43,9 @@ public class Road extends DrawableObject {
 
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
+//        super.draw(canvas);
 //        System.out.println(getPosX()+" : "+getPosY());
-        canvas.drawBitmap(getImage(), getPosX()-getWidth()/2, getPosY()-getHeight(), null);
-        canvas.drawBitmap(getImage(), getPosX()-getWidth()/2, getPosY()-2*getHeight(), null);
+        canvas.drawBitmap(getImage(), getPosX()-getWidth(), getPosY()-getHeight(), null);
+        canvas.drawBitmap(getImage(), getPosX()-getWidth(), getPosY()-2*getHeight(), null);
     }
 }
