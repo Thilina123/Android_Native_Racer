@@ -40,6 +40,15 @@ public class Vehicle extends DrawableObject {
 
     @Override
     public void update(float secondsElapsed){
+
+        if (getPosX()<getScreenWidth()*.125f && getSpeedX()<0){
+            setSpeedX(0);
+        }
+        if (getPosX()>getScreenWidth()*.95f && getSpeedX()>0){
+            setSpeedX(0);
+        }
+
+
         setPosX(getPosX() + (secondsElapsed * speedX));
         setPosY(getPosY() + (secondsElapsed * speedY));
         if (getSpeedX()>0){

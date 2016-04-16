@@ -4,8 +4,13 @@ package uk.ac.reading.sis05kol.mooc;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.widget.TextView;
+
+import java.util.Random;
 
 public class TheGame extends GameThread{
 
@@ -26,6 +31,11 @@ public class TheGame extends GameThread{
     private int score;
     private int frameCount;
     private GameView gameView;
+    private Random rnd;
+    private int rotation;
+    private int rotationChange;
+
+    public  static boolean rotated;
 
     //This is run before anything else, so we can prepare things here
     public TheGame(GameView gameView, MainActivity mainActivity, TextView scoreView) {
@@ -44,7 +54,7 @@ public class TheGame extends GameThread{
         car = new Vehicle(carImage,GameView.screenWidth/7,GameView.screenWidth,GameView.screenHeight);
         road = new Road(roadImage,GameView.screenWidth/2,GameView.screenWidth,GameView.screenHeight);
         roadVehicles = new RoadCarManager(gameView);
-
+        rnd = new Random();
         System.out.println(mCanvasHeight);
     }
 
@@ -83,7 +93,16 @@ public class TheGame extends GameThread{
         //If there isn't a canvas to draw on do nothing
         //It is ok not understanding what is happening here
         if(canvas == null) return;
+        canvas.drawColor(Color.GREEN, PorterDuff.Mode.CLEAR);
+        if (frameCount%100==0){
+            rotationChange=rnd.nextInt(3)-1;
 
+        }
+        rotation+=rotationChange;
+//        if(rotated) {
+            canvas.save();
+            canvas.rotate(rotation,canvas.getWidth()/2,canvas.getHeight()/2);
+//        }
         super.doDraw(canvas);
 
 
@@ -93,6 +112,9 @@ public class TheGame extends GameThread{
         road.draw(canvas);
         car.draw(canvas);
         roadVehicles.draw(canvas);
+        if (rotated){
+            canvas.restore();
+        }
     }
 
     //This is run whenever the phone is touched by the user
@@ -131,6 +153,7 @@ public class TheGame extends GameThread{
     @Override
     protected void updateGame(float secondsElapsed) {
         //Move the Car's X and Y using the speed (pixel/sec)
+        System.out.println(car.getPosX()+" : ");
         car.update(secondsElapsed);
         road.update(secondsElapsed);
         roadVehicles.update(secondsElapsed);
